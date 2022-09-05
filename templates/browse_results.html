@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Browse
+{% endblock %}
+
+{% block body %}
+
+  {% if get_flashed_messages() %}
+  <div class="alert alert-primary alert-dismissible fade show text-center" role="alert">
+      {{ get_flashed_messages() | join (" ") }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
+  {% if not huts %}
+  <h5 class="m3">No huts</h>
+  {% else %}
+  <h3 id="title" class="text-center">{{ region }} Huts</h3>
+  <div class="table-responsive mx-auto" style='max-width:800px'>
+    <form action="/browseresults/{{ region }}" method="post">
+      <table class="table table-hover table-borderless table-striped">
+        <thead>
+          <tr>
+          <th>Hut</th>
+          <th>Location</th>
+          <th></th>
+          <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for hut in huts %}
+          <tr>
+            <td>{{ hut['name'] }}</td>
+            <td>{{ hut['place'] }}</td>
+            <td><button type="submit" class="btn btn-primary btn-sm text-nowrap" name="addToVisited" value="{{ hut['id'] }}">+ My Huts</button></td>
+            <td><button type="submit" class="btn btn-primary btn-sm text-nowrap" name="addToWishlist" value="{{ hut['id'] }}">+ Wishlist</button></td>
+          </tr>
+            {% endfor %}   
+        </tbody>
+      </table>
+    </form>
+  </div>
+  {% endif %}
+
+{% endblock %}

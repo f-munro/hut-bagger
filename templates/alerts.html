@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+HutChecker
+{% endblock %}
+
+{% block body %}
+<div class="my-4">
+    <img src="{{url_for('static', filename='hut3.png')}}" style="max-width:20%" class="rounded mx-auto d-block">
+</div>
+<div>
+    <h2 id="title" class="text-center">Hut Checker</h2>
+</div>
+
+<div class="my-2 input-group justify-content-center">
+    <div class="mb-3 input-group justify-content-center">
+        <input id="search" autocomplete="off" class=me-2 type="text" placeholder="Search a hut for alerts">
+    </div>
+    <div class="list-group col-3 mb-3" style="height: 100px; overflow: scroll;">
+        <form id="list" action="/checkalerts" method="post">
+        </form>
+    </div>
+  </div>
+
+  {% if request.form.get("hut") %}
+    {% if alert %}
+    <div class='col-5 mx-auto mb-3 justify-content-center border border-warning"'>
+      <div class="alert alert-warning fade show text-center" role="alert">
+        Alert
+      </div>
+      <h4 class="m-2">{{ alert['name'] }}</h4>
+      <h5 class="mx-2">{{ alert['date'] }}</h5>
+      <h6 class="mx-2">{{ alert['heading'] }}</h5>
+      <p class='m-2'>{{ alert['detail'] }}</p>
+    {% else %}
+      <p class='text-center' style="font: italic 20px Helvetica, serif">No alerts for {{ hut[0]['name'] }}</p>
+    {% endif %}
+    </div>
+  {% endif %}
+
+  <script>
+    
+    let input = document.getElementById('search');
+        input.addEventListener('input', async function() {
+            let response = await fetch('/hutsearch?q=' + input.value);
+            let huts = await response.json();
+            let html = '';
+            for (let id in huts) {
+                let name = huts[id].name.replace('<', '&lt;').replace('&', '&amp;');
+                html += '<button type="submit" name="hut" value="' + huts[id].id + '" class="list-group-item list-group-item-action">' + name + '</button>';
+            }
+            document.getElementById('list').innerHTML = html;
+        });
+
+</script>
+
+  {% endblock %}

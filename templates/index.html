@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Index
+{% endblock %}
+
+{% block body %}
+    <div class="my-4">
+        <img src="{{url_for('static', filename='hut2.png')}}" style="max-width:20%" class="rounded mx-auto d-block">
+    </div>
+    <div>
+        <h2 id="title" class="text-center">Hut Bagger</h2>
+    </div>
+    <div class="my-2 input-group justify-content-center">
+        <div class="align-items-start mb-3 input-group justify-content-center">
+            <input id="search" autocomplete="off" type="text" placeholder="Search a hut">
+        </div>
+        <ul class="list-group" style="height: 200px; overflow: scroll;">
+            {% if get_flashed_messages() %}
+            <div class="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                {{ get_flashed_messages() | join (" ") }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+            <form id="list" action="/" method="post"></form>
+        </ul>
+    </div>
+
+      </div>
+    <script>
+    
+        let input = document.getElementById('search');
+            input.addEventListener('input', async function() {
+                let response = await fetch('/hutsearch?q=' + input.value);
+                let huts = await response.json();
+                let html = '';
+                for (let id in huts) {
+                    let name = huts[id].name.replace('&', '&amp;');
+                    html += '<li class="list-group-item d-flex"><p class="p-0 m-1 flex-grow-1">' +  name + '</p><button type="submit" class="btn btn-primary btn-sm mx-1 text-nowrap" name="addToMyHuts" value="' + huts[id].id + '">+ My Huts</button><button type="submit" class="btn btn-primary btn-sm text-nowrap" name="addToWishlist" value="' + huts[id].id + '">+ Wishlist</button></li>';
+                }
+                document.getElementById('list').innerHTML = html;
+            });
+    
+    </script>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+My Huts
+{% endblock %}
+
+{% block body %}
+
+  {% if get_flashed_messages() %}
+  <div class="alert alert-primary alert-dismissible fade show text-center" role="alert">
+      {{ get_flashed_messages() | join (" ") }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
+
+  <div>
+    <h2 id="title" class="mb-5 text-center">My Huts</h2>
+  </div>
+  <div class="table-responsive mx-auto" style='max-width:800px'>
+      {% if session['visited'] %}
+      <form action="/myhuts" method="post">
+        <table class="table table-hover table-borderless table-striped">
+          <thead>
+            <tr>
+            <th>Hut</th>
+            <th>Region</th>
+            <th>Place</th>
+            <th></th>
+            <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for hut in huts %}
+            <tr>
+              <td>{{ hut['name'] }}</td>
+              <td>{{ hut['region'] }}</td>
+              <td>{{ hut['place'] }}</td>
+              <td><a class="btn btn-primary btn-sm text-nowrap" href="{{ hut['link'] }}">More Info</a></td>
+              <td><button type="submit" class="btn btn-light btn-sm text-nowrap" name="remove" value="{{ hut['id'] }}">Remove</button></td>
+            </tr>
+              {% endfor %}   
+          </tbody>
+        </table>
+      </form>
+      {% else %}
+        <p class="text-center">You haven't added any huts</p>
+      {% endif %}
+  </div>
+{% endblock %}
