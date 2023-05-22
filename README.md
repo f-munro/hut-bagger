@@ -7,7 +7,7 @@ Users can search or browse for huts, add huts to a wishlist and can also check h
 ##### create_db.py
 This script creates the database that will hold all of the huts and some details on each hut. The DOC
 huts API is called and all the huts are added to a JSON object. A database is then created using SQLite.
-I didn't use the CS50 library for thisas I was interested to learn how to use SQL without it. The 
+I didn't use the CS50 library for this as I was interested to learn how to use SQL without it. The 
 regions for some huts are blank, so these have been replaced with 'other' to avoid any issues.  Some
 regions contain a forward slash, which have also been replaced to avoid issues when using them in URLs. 
 For each hut, another API is called to add extra details.
@@ -15,7 +15,7 @@ For each hut, another API is called to add extra details.
 ##### app.py
 First the app is configured and a session is created. The app uses a flask session to keep track of
 huts the user adds. This was chosen over having the user create an account for simplicity, and there's
-no sensitive data involved. I'd consider changing thisin the future as it's more common now for people
+no sensitive data involved. I'd consider changing this in the future as it's more common now for people
 to clear cookies.
 A global variable containing every region is created, so each function can pass it to the html template
 and the region dropdown can be accessed on the navbar from every page. There is probably a better way to 
